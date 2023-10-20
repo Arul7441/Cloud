@@ -1,0 +1,77 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+       
+        Integer[] numbers = {1, 2, 3, 4, 5, 6, 7};
+        List<Integer> numberList = Arrays.asList(numbers);
+        Collections.shuffle(numberList);
+
+     
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a Roman numeral: ");
+        String romanNumeral = scanner.nextLine();
+        int integerEquivalent = convertRomanToInteger(romanNumeral);
+        System.out.println("Integer equivalent: " + integerEquivalent);
+
+       
+        System.out.print("Enter a sentence to check if it's a pangram: ");
+        String sentence = scanner.nextLine();
+        boolean isPangram = checkIfPangram(sentence);
+        if (isPangram) {
+            System.out.println("The sentence is a pangram.");
+        } else {
+            System.out.println("The sentence is not a pangram.");
+        }
+    }
+
+    public static int convertRomanToInteger(String s) {
+       
+        String romanNumerals = "IVXLCDM";
+        int[] values = {1, 5, 10, 50, 100, 500, 1000};
+
+        int result = 0;
+        int prevValue = 0;
+
+        for (int i = s.length() - 1; i >= 0; i--) {
+            int index = romanNumerals.indexOf(s.charAt(i));
+            int value = values[index];
+
+            if (value < prevValue) {
+                result -= value;
+            } else {
+                result += value;
+            }
+
+            prevValue = value;
+        }
+
+        return result;
+    }
+
+    public static boolean checkIfPangram(String sentence) {
+   
+        sentence = sentence.toLowerCase();
+
+        
+        boolean[] alphabetPresence = new boolean[26];
+
+        for (int i = 0; i < sentence.length(); i++) {
+            char ch = sentence.charAt(i);
+            if (ch >= 'a' && ch <= 'z') {
+                alphabetPresence[ch - 'a'] = true;
+            }
+        }
+
+        for (boolean present : alphabetPresence) {
+            if (!present) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
